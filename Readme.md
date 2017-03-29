@@ -1,7 +1,11 @@
 # Учебный проект «Код и Магия» [![Build status][travis-image]][travis-url]
 
 * Студент: [Kally L](https://up.htmlacademy.ru/javascript/9/user/218165).
+<<<<<<< HEAD
 * Наставник: [Александр Большов](https://htmlacademy.ru/profile/id179111).
+=======
+* Наставник: Александр Большов
+>>>>>>> f5b5f1aab8163c5cdc52211fcc71d09041654523
 ---
 
 _Не удаляйте и не обращайте внимание на папки и файлы:_<br>
