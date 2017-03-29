@@ -31,8 +31,8 @@ window.renderStatistics = function (ctx, names, times) {
   drawBox(ctx, 110, 20, 'rgba(0, 0, 0, 0.7)');
   drawBox(ctx, 100, 10, '#fff');
   ctx.font = '16px PT Mono';
-  ctx.strokeText('Ура, вы победили!', 100, 60);
-  ctx.strokeText('Список результатов:', 120, 60);
+  ctx.strokeText('Ура, вы победили!', 140, 40);
+  ctx.strokeText('Список результатов:', 140, 60);
   renderHisto(ctx, names, times);
 };
 
