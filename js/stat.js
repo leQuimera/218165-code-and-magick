@@ -7,7 +7,7 @@ var drawBox = function (ctx, cloudX, cloudY, cloudColor) {
 
 function getMaxOfArray(numArray) {
   return Math.max.apply(null, numArray);
-};
+}
 
 var renderHisto = function (ctx, names, times) {
   var max = getMaxOfArray(times);
