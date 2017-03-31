@@ -1,5 +1,5 @@
 'use strict';
-//Коммент для комита
+
 var drawBox = function (ctx, cloudX, cloudY, cloudColor) {
   ctx.fillStyle = cloudColor;
   ctx.fillRect(cloudX, cloudY, 420, 270);
