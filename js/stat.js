@@ -5,6 +5,7 @@ var cloudTopX = 100;
 var cloudTopY = 10;
 var cloudHeght = 270;
 var cloudWidth = 420;
+var histWidth = 40;
 var colorBase = '#fff';
 var colorShadow = 'rgba(0, 0, 0, 0.7)';
 
@@ -19,6 +20,15 @@ function getMaxOfArray(numArray) {
   return Math.max.apply(null, numArray);
 }
 
+var choseColor = function (gamerName) {
+  if (gamerName === 'Вы') {
+    var histColor = 'rgba(255, 0, 0, 1)';
+  } else {
+    histColor = 'rgba(11, 18, 110, ' + Math.random() + ')';
+  }
+  return histColor;
+};
+
 // Построение гистограммы (канвас, имена игроков, результаты)
 var renderHisto = function (ctx, names, times) {
   var max = getMaxOfArray(times);
@@ -29,10 +39,10 @@ var renderHisto = function (ctx, names, times) {
   for (var i = 0; i < names.length; i++) {
     var positionY = botomY - times[i] * step;
     var positionHeight = botomY - positionY;
-    var histColor = (names[i] === 'Вы') ? 'rgba(255, 0, 0, 1)' : 'rgba(11, 18, 110, ' + Math.random() + ')';
+    var histColor = choseColor(names[i]);
     var positionX = 140 + 90 * i;
     ctx.fillStyle = histColor;
-    ctx.fillRect(positionX, positionY, 40, positionHeight);
+    ctx.fillRect(positionX, positionY, histWidth, positionHeight);
     ctx.strokeText(names[i], positionX, cloudHeght);
   }
 };
