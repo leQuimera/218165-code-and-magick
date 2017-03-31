@@ -18,7 +18,7 @@ var renderHisto = function (ctx, names, times) {
   for (var i = 0; i < names.length; i++) {
     var countY = 250 - times[i] * step;
     var contHeight = 250 - countY;
-    var histColor = (names[i] == 'Вы') ? 'rgba(255, 0, 0, 1)' : 'rgba(11, 18, 110, ' + Math.random() + ')';
+    var histColor = (names[i] === 'Вы') ? 'rgba(255, 0, 0, 1)' : 'rgba(11, 18, 110, ' + Math.random() + ')';
     var countX = 140 + 90 * i;
     ctx.fillStyle = histColor;
     ctx.fillRect(countX, countY, 40, contHeight);
