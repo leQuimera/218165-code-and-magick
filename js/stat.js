@@ -18,7 +18,11 @@ var renderHisto = function (ctx, names, times) {
   for (var i = 0; i < names.length; i++) {
     var countY = 250 - times[i] * step;
     var contHeight = 250 - countY;
+<<<<<<< HEAD
     var histColor = (names[i] === 'Вы') ? 'rgba(255, 0, 0, 1)' : '#303030';
+=======
+    var histColor = (names[i] == 'Вы') ? 'rgba(255, 0, 0, 1)' : 'rgba(11, 18, 110, ' + Math.random() + ')';
+>>>>>>> 8b2d4da0cee4039a70318df817d50776ef2e7e53
     var countX = 140 + 90 * i;
     ctx.fillStyle = histColor;
     ctx.fillRect(countX, countY, 40, contHeight);
@@ -30,7 +34,8 @@ window.renderStatistics = function (ctx, names, times) {
   drawBox(ctx, 110, 20, 'rgba(0, 0, 0, 0.7)');
   drawBox(ctx, 100, 10, '#fff');
   ctx.font = '16px PT Mono';
-  ctx.strokeText('Список результатов:', 120, 60);
+  ctx.strokeText('Ура, вы победили!', 140, 40);
+  ctx.strokeText('Список результатов:', 140, 60);
   renderHisto(ctx, names, times);
 };
 
