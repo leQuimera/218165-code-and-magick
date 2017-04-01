@@ -25,8 +25,7 @@ function getMaxOfArray(numArray) {
 
 // Вычисление цвета для колонки
 var getColor = function () {
-  var tmpHistColor = 'rgba(11, 18, 110, ' + Math.random() + ')';
-  return tmpHistColor;
+  return 'rgba(11, 18, 110, ' + Math.random() + ')';
 };
 
 // Построение гистограммы (канвас, имена игроков, результаты)
