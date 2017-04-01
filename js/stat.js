@@ -1,6 +1,6 @@
 'use strict';
 
-var botomY = 250;
+var bottomY = 250;
 var cloudTopX = 100;
 var cloudTopY = 10;
 var cloudHeght = 270;
@@ -8,7 +8,7 @@ var cloudWidth = 420;
 var histogramHeight = 150;
 var histWidth = 40;
 var indent = 50;
-var colonStep = indent + histWidth;
+var barStep = indent + histWidth;
 var colorBase = '#fff';
 var colorShadow = 'rgba(0, 0, 0, 0.7)';
 
@@ -36,10 +36,10 @@ var renderHisto = function (ctx, names, times) {
   max = (max / 1000).toFixed(2);
 
   for (var i = 0; i < names.length; i++) {
-    var positionY = botomY - times[i] * step;
-    var positionHeight = botomY - positionY;
+    var positionY = bottomY - times[i] * step;
+    var positionHeight = bottomY - positionY;
     var histColor = (names[i] === 'Вы') ? 'rgba(255, 0, 0, 1)' : getColor();
-    var positionX = 140 + colonStep * i;
+    var positionX = 140 + barStep * i;
     var timeSet = Math.round(times[i]);
     ctx.strokeText(timeSet, positionX, positionY - 10);
     ctx.fillStyle = histColor;
