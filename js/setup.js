@@ -40,56 +40,56 @@ var eyesColor = [
 ];
 
 var numberOfMags = 4;
-var wizards = [];
-
 
 var userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
-
 var similarListElement = document.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
 
 
-// Получений случайного целого числа (минимум, максимум)
+// Получение случайного индекса для массива (массив)
 function getRandomInt(array) {
   return Math.floor(Math.random() * array.length);
 }
 
 // Заполнение массива wizard случайно собранными магами
-function creatMagMatrix(setMagics) {
-  for (var i = 0; i < setMagics; i++) {
-    var iName = getRandomInt(wizardName);
-    var iFamily = getRandomInt(wizardFamily);
-    var iCoat = getRandomInt(coatColor);
-    var iEye = getRandomInt(eyesColor);
-    wizards[i] = { };
-    wizards[i].name = wizardName[iName] + ' ' + wizardFamily[iFamily];
-    wizards[i].eyes = eyesColor[iEye];
-    wizards[i].coat = coatColor[iCoat];
+// (кол-во магов, Имена, Фамилии, цвет мантий, цвет глаз)
+function creatMagMatrix(packOfWizards, arrayName, arrayFamily, arrayCoat, arrayEyes) {
+  var innerArray = [];
+
+  for (var i = 0; i < packOfWizards; i++) {
+    innerArray[i] = {};
+    innerArray[i].name = arrayName[getRandomInt(arrayName)] + ' ' + arrayFamily[getRandomInt(arrayFamily)];
+    innerArray[i].eyes = arrayEyes[getRandomInt(arrayEyes)];
+    innerArray[i].coat = arrayCoat[getRandomInt(arrayCoat)];
   }
-  return wizards;
+  return innerArray;
 }
 
 // Отрисовка мага по заданным данным
 function showWizard(wizard) {
   var wizardElement = similarWizardTemplate.cloneNode(true);
-  wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-  wizardElement.querySelector('.wizard-coat').style.fill = wizard.coat;
-  wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyes;
+  var setupSimilarLabel = wizardElement.querySelector('.setup-similar-label');
+  var wizardCoat = wizardElement.querySelector('.wizard-coat');
+  var wizardEyes = wizardElement.querySelector('.wizard-eyes');
+
+  setupSimilarLabel.textContent = wizard.name;
+  wizardCoat.style.fill = wizard.coat;
+  wizardEyes.style.fill = wizard.eyes;
 
   return wizardElement;
 }
 
 // Создаем фрагмент для вставки
-function setFragment() {
+function setFragment(array) {
   var fragment = document.createDocumentFragment();
-  for (var i = 0; i < wizards.length; i++) {
-    fragment.appendChild(showWizard(wizards[i])); // appendChild вставка элементов внутрь fragment
+
+  for (var i = 0; i < array.length; i++) {
+    fragment.appendChild(showWizard(array[i])); // appendChild вставка элементов внутрь fragment
   }
   return fragment;
 }
 
-creatMagMatrix(numberOfMags);
-similarListElement.appendChild(setFragment());
-
+userDialog.classList.remove('hidden');
+var wizards = creatMagMatrix(numberOfMags, wizardName, wizardFamily, coatColor, eyesColor);
+similarListElement.appendChild(setFragment(wizards));
 document.querySelector('.setup-similar').classList.remove('hidden');
