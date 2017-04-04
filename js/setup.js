@@ -11,7 +11,6 @@ var wizardName = [
   'Люпита',
   'Вашингтон'
 ];
-
 var wizardFamily = [
   'да Марья',
   'Верон',
@@ -30,7 +29,6 @@ var coatColor = [
   'rgb(215, 210, 55)',
   'rgb(0, 0, 0)'
 ];
-
 var eyesColor = [
   'black',
   'red',
@@ -38,22 +36,19 @@ var eyesColor = [
   'yellow',
   'green'
 ];
-
-var numberOfMags = 4;
-
+var numberOfWizards = 4;
 var userDialog = document.querySelector('.setup');
 var similarListElement = document.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
 
-
 // Получение случайного индекса для массива (массив)
-function getRandomInt(array) {
+var getRandomInt = function (array) {
   return Math.floor(Math.random() * array.length);
-}
+};
 
 // Заполнение массива wizard случайно собранными магами
 // (кол-во магов, Имена, Фамилии, цвет мантий, цвет глаз)
-function creatMagMatrix(packOfWizards, arrayName, arrayFamily, arrayCoat, arrayEyes) {
+var createWizardMatrix = function (packOfWizards, arrayName, arrayFamily, arrayCoat, arrayEyes) {
   var innerArray = [];
 
   for (var i = 0; i < packOfWizards; i++) {
@@ -63,10 +58,10 @@ function creatMagMatrix(packOfWizards, arrayName, arrayFamily, arrayCoat, arrayE
     innerArray[i].coat = arrayCoat[getRandomInt(arrayCoat)];
   }
   return innerArray;
-}
+};
 
 // Отрисовка мага по заданным данным
-function showWizard(wizard) {
+var showWizard = function (wizard) {
   var wizardElement = similarWizardTemplate.cloneNode(true);
   var setupSimilarLabel = wizardElement.querySelector('.setup-similar-label');
   var wizardCoat = wizardElement.querySelector('.wizard-coat');
@@ -75,21 +70,19 @@ function showWizard(wizard) {
   setupSimilarLabel.textContent = wizard.name;
   wizardCoat.style.fill = wizard.coat;
   wizardEyes.style.fill = wizard.eyes;
-
   return wizardElement;
-}
+};
 
 // Создаем фрагмент для вставки
-function setFragment(array) {
+var setFragment = function (array) {
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < array.length; i++) {
     fragment.appendChild(showWizard(array[i])); // appendChild вставка элементов внутрь fragment
   }
   return fragment;
-}
-
+};
 userDialog.classList.remove('hidden');
-var wizards = creatMagMatrix(numberOfMags, wizardName, wizardFamily, coatColor, eyesColor);
+var wizards = createWizardMatrix(numberOfWizards, wizardName, wizardFamily, coatColor, eyesColor);
 similarListElement.appendChild(setFragment(wizards));
 document.querySelector('.setup-similar').classList.remove('hidden');
