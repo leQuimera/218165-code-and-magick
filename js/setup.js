@@ -36,10 +36,14 @@ var eyesColor = [
   'yellow',
   'green'
 ];
+var fireColors = [
+  '#ee4830',
+  '#30a8ee',
+  '#5ce6c0',
+  '#e848d5',
+  '#e6e848'
+];
 var numberOfWizards = 4;
-var userDialog = document.querySelector('.setup');
-var similarListElement = document.querySelector('.setup-similar-list');
-var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
 
 // Получение случайного индекса для массива (массив)
 var getRandomInt = function (array) {
@@ -62,6 +66,7 @@ var createWizardMatrix = function (packOfWizards, arrayName, arrayFamily, arrayC
 
 // Отрисовка мага по заданным данным
 var showWizard = function (wizard) {
+  var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
   var wizardElement = similarWizardTemplate.cloneNode(true);
   var setupSimilarLabel = wizardElement.querySelector('.setup-similar-label');
   var wizardCoat = wizardElement.querySelector('.wizard-coat');
@@ -82,7 +87,84 @@ var setFragment = function (array) {
   }
   return fragment;
 };
-userDialog.classList.remove('hidden');
-var wizards = createWizardMatrix(numberOfWizards, wizardName, wizardFamily, coatColor, eyesColor);
-similarListElement.appendChild(setFragment(wizards));
-document.querySelector('.setup-similar').classList.remove('hidden');
+
+// Создание окна с похожими магами
+var creatreWizards = function () {
+  var similarListElement = document.querySelector('.setup-similar-list');
+  var wizards = createWizardMatrix(numberOfWizards, wizardName, wizardFamily, coatColor, eyesColor);
+  similarListElement.appendChild(setFragment(wizards));
+  document.querySelector('.setup-similar').classList.remove('hidden');
+};
+
+// Изменение внешности мага
+var wizardRecolor = function () {
+  var setupPlayer = document.querySelector('.setup-player');
+  var wizardCoat = setupPlayer.querySelector('.wizard-coat');
+  var wizardEyes = setupPlayer.querySelector('.wizard-eyes');
+  var wizardFireball = setupPlayer.querySelector('.setup-fireball-wrap');
+
+  wizardCoat.addEventListener('click', function () {
+    wizardCoat.style.fill = coatColor[getRandomInt(coatColor)];
+  });
+
+  wizardEyes.addEventListener('click', function () {
+    wizardEyes.style.fill = eyesColor[getRandomInt(eyesColor)];
+  });
+
+  wizardFireball.addEventListener('click', function () {
+    wizardFireball.style.background = fireColors[getRandomInt(fireColors)];
+  });
+};
+
+
+// Взаимодействие с окном пользователя
+var showUserWindow = function () {
+  var userDialog = document.querySelector('.setup');
+  var setupOpen = document.querySelector('.setup-open');
+  var setupClose = userDialog.querySelector('.setup-close');
+
+  // Открытие окна по esc
+  var onPopupEscPress = function (evt) {
+    if (evt.keyCode === 27) {
+      closePopup();
+    }
+  };
+
+  // Открытие окна
+  var openPopup = function () {
+    userDialog.classList.remove('hidden');
+    document.addEventListener('keydown', onPopupEscPress);
+  };
+
+  // Закрытие окна
+  var closePopup = function () {
+    userDialog.classList.add('hidden');
+    document.removeEventListener('keydown', onPopupEscPress);
+  };
+
+  setupOpen.addEventListener('click', function () {
+    openPopup();
+  });
+
+  // Нажатие кнопки по Enter
+  setupOpen.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === 13) {
+      openPopup();
+    }
+  });
+
+  setupClose.addEventListener('click', function () {
+    closePopup();
+  });
+
+  setupClose.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === 13) {
+      closePopup();
+    }
+  });
+
+  creatreWizards();
+  wizardRecolor();
+};
+
+showUserWindow();
