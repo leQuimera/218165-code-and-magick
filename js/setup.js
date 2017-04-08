@@ -1,48 +1,11 @@
 // Файл setup.js
 'use strict';
 
-var wizardName = [
-  'Иван',
-  'Хуан Себастьян',
-  'Мария',
-  'Кристоф',
-  'Виктор',
-  'Юлия',
-  'Люпита',
-  'Вашингтон'
-];
-var wizardFamily = [
-  'да Марья',
-  'Верон',
-  'Мирабелла',
-  'Вальц',
-  'Онопко',
-  'Топольницкая',
-  'Нионго',
-  'Ирвинг'
-];
-var coatColor = [
-  'rgb(101, 137, 164)',
-  'rgb(241, 43, 107)',
-  'rgb(146, 100, 161)',
-  'rgb(56, 159, 117)',
-  'rgb(215, 210, 55)',
-  'rgb(0, 0, 0)'
-];
-var eyesColor = [
-  'black',
-  'red',
-  'blue',
-  'yellow',
-  'green'
-];
-var fireColors = [
-  '#ee4830',
-  '#30a8ee',
-  '#5ce6c0',
-  '#e848d5',
-  '#e6e848'
-];
+var wizardNames = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
+var wizardSurnames = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
+var coatColors = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
+var eyesColors = ['black', 'red', 'blue', 'yellow', 'green'];
+var fireColors = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var numberOfWizards = 4;
 
 // Получение случайного индекса для массива (массив)
@@ -52,12 +15,12 @@ var getRandomInt = function (array) {
 
 // Заполнение массива wizard случайно собранными магами
 // (кол-во магов, Имена, Фамилии, цвет мантий, цвет глаз)
-var createWizardMatrix = function (packOfWizards, arrayName, arrayFamily, arrayCoat, arrayEyes) {
+var createWizardMatrix = function (packOfWizards, arrayName, arraySurname, arrayCoat, arrayEyes) {
   var innerArray = [];
 
   for (var i = 0; i < packOfWizards; i++) {
     innerArray[i] = {};
-    innerArray[i].name = arrayName[getRandomInt(arrayName)] + ' ' + arrayFamily[getRandomInt(arrayFamily)];
+    innerArray[i].name = arrayName[getRandomInt(arrayName)] + ' ' + arraySurname[getRandomInt(arraySurname)];
     innerArray[i].eyes = arrayEyes[getRandomInt(arrayEyes)];
     innerArray[i].coat = arrayCoat[getRandomInt(arrayCoat)];
   }
@@ -68,10 +31,12 @@ var createWizardMatrix = function (packOfWizards, arrayName, arrayFamily, arrayC
 var showWizard = function (wizard) {
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
   var wizardElement = similarWizardTemplate.cloneNode(true);
+  var similarItem = wizardElement.querySelector('.setup-similar-item');
   var setupSimilarLabel = wizardElement.querySelector('.setup-similar-label');
   var wizardCoat = wizardElement.querySelector('.wizard-coat');
   var wizardEyes = wizardElement.querySelector('.wizard-eyes');
 
+  similarItem.setAttribute('style', 'width: 185px;');
   setupSimilarLabel.textContent = wizard.name;
   wizardCoat.style.fill = wizard.coat;
   wizardEyes.style.fill = wizard.eyes;
@@ -89,9 +54,9 @@ var setFragment = function (array) {
 };
 
 // Создание окна с похожими магами
-var creatreWizards = function () {
+var createWizards = function () {
   var similarListElement = document.querySelector('.setup-similar-list');
-  var wizards = createWizardMatrix(numberOfWizards, wizardName, wizardFamily, coatColor, eyesColor);
+  var wizards = createWizardMatrix(numberOfWizards, wizardNames, wizardSurnames, coatColors, eyesColors);
   similarListElement.appendChild(setFragment(wizards));
   document.querySelector('.setup-similar').classList.remove('hidden');
 };
@@ -104,11 +69,11 @@ var wizardRecolor = function () {
   var wizardFireball = setupPlayer.querySelector('.setup-fireball-wrap');
 
   wizardCoat.addEventListener('click', function () {
-    wizardCoat.style.fill = coatColor[getRandomInt(coatColor)];
+    wizardCoat.style.fill = coatColors[getRandomInt(coatColors)];
   });
 
   wizardEyes.addEventListener('click', function () {
-    wizardEyes.style.fill = eyesColor[getRandomInt(eyesColor)];
+    wizardEyes.style.fill = eyesColors[getRandomInt(eyesColors)];
   });
 
   wizardFireball.addEventListener('click', function () {
@@ -119,9 +84,10 @@ var wizardRecolor = function () {
 
 // Взаимодействие с окном пользователя
 var showUserWindow = function () {
-  var userDialog = document.querySelector('.setup');
+  var setup = document.querySelector('.setup');
   var setupOpen = document.querySelector('.setup-open');
-  var setupClose = userDialog.querySelector('.setup-close');
+  var setupClose = setup.querySelector('.setup-close');
+  var setupUserName = setup.querySelector('.setup-user-name');
 
   // Открытие окна по esc
   var onPopupEscPress = function (evt) {
@@ -132,13 +98,15 @@ var showUserWindow = function () {
 
   // Открытие окна
   var openPopup = function () {
-    userDialog.classList.remove('hidden');
+    setup.classList.remove('hidden');
     document.addEventListener('keydown', onPopupEscPress);
+    createWizards();
+    wizardRecolor();
   };
 
   // Закрытие окна
   var closePopup = function () {
-    userDialog.classList.add('hidden');
+    setup.classList.add('hidden');
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
@@ -163,8 +131,8 @@ var showUserWindow = function () {
     }
   });
 
-  creatreWizards();
-  wizardRecolor();
+  setupUserName.setAttribute('required', 'required');
+  setupUserName.setAttribute('maxlength', 50);
 };
 
 showUserWindow();
