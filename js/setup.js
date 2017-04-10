@@ -89,6 +89,10 @@ var showUserWindow = function () {
   var setupClose = setup.querySelector('.setup-close');
   var setupUserName = setup.querySelector('.setup-user-name');
 
+  setupUserName.setAttribute('required', 'required');
+  setupUserName.setAttribute('maxlength', 50);
+  setupClose.setAttribute('tabindex', 0);
+
   // Открытие окна по esc
   var onPopupEscPress = function (evt) {
     if (evt.keyCode === 27) {
@@ -96,11 +100,25 @@ var showUserWindow = function () {
     }
   };
 
+  var opPopupEntrerPress = function (evt) {
+    if  (evt.keyCode === 13) {
+      if (this.className === 'setup-open') {
+       openPopup();
+      }
+      if (this.className === 'setup-close') {
+        closePopup();
+      }
+    }
+  };
+
   // Открытие окна
   var openPopup = function () {
+    var similarListElement = document.querySelector('.setup-similar-list');
     setup.classList.remove('hidden');
     document.addEventListener('keydown', onPopupEscPress);
-    createWizards();
+    if (!similarListElement.children.length) {
+      createWizards();
+    }
     wizardRecolor();
   };
 
@@ -114,25 +132,16 @@ var showUserWindow = function () {
     openPopup();
   });
 
-  // Нажатие кнопки по Enter
-  setupOpen.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === 13) {
-      openPopup();
-    }
-  });
-
-  setupClose.addEventListener('click', function () {
-    closePopup();
-  });
-
-  setupClose.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === 13) {
-      closePopup();
-    }
-  });
-
-  setupUserName.setAttribute('required', 'required');
-  setupUserName.setAttribute('maxlength', 50);
+  setupOpen.addEventListener('keydown', opPopupEntrerPress);
+  setupClose.addEventListener('keydown', opPopupEntrerPress);
+  setupClose.addEventListener('click', closePopup);
 };
 
+// Привентивное добавление tabindex к кнопке открытия формы
+var addTabIndex = function () {
+  var setupIcon = document.querySelector('.setup-open-icon');
+  setupIcon.setAttribute('tabindex', 0);
+};
+
+addTabIndex();
 showUserWindow();
