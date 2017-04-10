@@ -136,9 +136,17 @@ var showUserWindow = function () {
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
+  var closebyButton = function () {
+    var quantity = setupUserName.value;
+    if (quantity === '' || quantity <= 50) {
+      return;
+    }
+    closePopup();
+  };
+
   setupOpen.addEventListener('click', openPopup);
   setupOpen.addEventListener('keydown', onPopupEntrerPress);
-  setupSubmit.addEventListener('click', closePopup);
+  setupSubmit.addEventListener('click', closebyButton);
   setupClose.addEventListener('keydown', onPopupEntrerPress);
   setupClose.addEventListener('click', closePopup);
 };
