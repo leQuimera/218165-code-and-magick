@@ -88,10 +88,10 @@ var showUserWindow = function () {
   var setupOpen = document.querySelector('.setup-open');
   var setupClose = setup.querySelector('.setup-close');
   var setupUserName = setup.querySelector('.setup-user-name');
+  var setupSubmit = setup.querySelector('.setup-submit');
 
   setupUserName.setAttribute('required', 'required');
   setupUserName.setAttribute('maxlength', 50);
-  setupClose.setAttribute('tabindex', 0);
 
   // Открытие окна по esc
   var onPopupEscPress = function (evt) {
@@ -100,7 +100,7 @@ var showUserWindow = function () {
     }
   };
 
-  var opPopupEntrerPress = function (evt) {
+  var onPopupEntrerPress = function (evt) {
     if (evt.keyCode === 13) {
       if (evt.target.className === 'setup-open-icon') {
         openPopup();
@@ -111,16 +111,21 @@ var showUserWindow = function () {
     }
   };
 
-  // Открытие окна
-  var openPopup = function () {
+  // Проверка существования магов в блоке "Похожие" и очистка списка магов, если он уже был создан
+  var validateWizards = function () {
     var similarListElement = document.querySelector('.setup-similar-list');
-    setup.classList.remove('hidden');
-    document.addEventListener('keydown', onPopupEscPress);
     if (similarListElement.children.length) {
       while (similarListElement.firstChild) {
         similarListElement.removeChild(similarListElement.firstChild);
       }
     }
+  };
+
+  // Открытие окна
+  var openPopup = function () {
+    setup.classList.remove('hidden');
+    document.addEventListener('keydown', onPopupEscPress);
+    validateWizards();
     createWizards();
     wizardRecolor();
   };
@@ -132,8 +137,9 @@ var showUserWindow = function () {
   };
 
   setupOpen.addEventListener('click', openPopup);
-  setupOpen.addEventListener('keydown', opPopupEntrerPress);
-  setupClose.addEventListener('keydown', opPopupEntrerPress);
+  setupOpen.addEventListener('keydown', onPopupEntrerPress);
+  setupSubmit.addEventListener('click', closePopup);
+  setupClose.addEventListener('keydown', onPopupEntrerPress);
   setupClose.addEventListener('click', closePopup);
 };
 
