@@ -101,11 +101,11 @@ var showUserWindow = function () {
   };
 
   var opPopupEntrerPress = function (evt) {
-    if  (evt.keyCode === 13) {
-      if (this.className === 'setup-open') {
-       openPopup();
+    if (evt.keyCode === 13) {
+      if (evt.target.className === 'setup-open-icon') {
+        openPopup();
       }
-      if (this.className === 'setup-close') {
+      if (evt.target.className === 'setup-close') {
         closePopup();
       }
     }
@@ -116,9 +116,12 @@ var showUserWindow = function () {
     var similarListElement = document.querySelector('.setup-similar-list');
     setup.classList.remove('hidden');
     document.addEventListener('keydown', onPopupEscPress);
-    if (!similarListElement.children.length) {
-      createWizards();
+    if (similarListElement.children.length) {
+      while (similarListElement.firstChild) {
+        similarListElement.removeChild(similarListElement.firstChild);
+      }
     }
+    createWizards();
     wizardRecolor();
   };
 
@@ -128,10 +131,7 @@ var showUserWindow = function () {
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
-  setupOpen.addEventListener('click', function () {
-    openPopup();
-  });
-
+  setupOpen.addEventListener('click', openPopup);
   setupOpen.addEventListener('keydown', opPopupEntrerPress);
   setupClose.addEventListener('keydown', opPopupEntrerPress);
   setupClose.addEventListener('click', closePopup);
