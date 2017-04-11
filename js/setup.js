@@ -68,19 +68,23 @@ var wizardRecolor = function () {
   var wizardEyes = setupPlayer.querySelector('.wizard-eyes');
   var wizardFireball = setupPlayer.querySelector('.setup-fireball-wrap');
 
-  wizardCoat.addEventListener('click', function () {
-    wizardCoat.style.fill = coatColors[getRandomInt(coatColors)];
-  });
+// Функция смены цвета по клику
+  var getRandomColor = function (evt) {
+    if (evt.srcElement.className.baseVal === 'wizard-coat') {
+      evt.srcElement.style.fill = coatColors[getRandomInt(coatColors)];
+    }
+    if (evt.srcElement.className.baseVal === 'wizard-eyes') {
+      evt.srcElement.style.fill = eyesColors[getRandomInt(eyesColors)];
+    }
+    if (evt.target.parentNode.className === 'setup-fireball-wrap') {
+      evt.target.parentNode.style.background = fireColors[getRandomInt(fireColors)];
+    }
+  };
 
-  wizardEyes.addEventListener('click', function () {
-    wizardEyes.style.fill = eyesColors[getRandomInt(eyesColors)];
-  });
-
-  wizardFireball.addEventListener('click', function () {
-    wizardFireball.style.background = fireColors[getRandomInt(fireColors)];
-  });
+  wizardCoat.addEventListener('click', getRandomColor);
+  wizardEyes.addEventListener('click', getRandomColor);
+  wizardFireball.addEventListener('click', getRandomColor);
 };
-
 
 // Взаимодействие с окном пользователя
 var showUserWindow = function () {
@@ -137,10 +141,6 @@ var showUserWindow = function () {
   };
 
   var closebyButton = function () {
-    var quantity = setupUserName.value;
-    if (quantity === '' || quantity <= 50) {
-      return;
-    }
     closePopup();
   };
 
@@ -151,11 +151,4 @@ var showUserWindow = function () {
   setupClose.addEventListener('click', closePopup);
 };
 
-// Привентивное добавление tabindex к кнопке открытия формы
-var addTabIndex = function () {
-  var setupIcon = document.querySelector('.setup-open-icon');
-  setupIcon.setAttribute('tabindex', 0);
-};
-
-addTabIndex();
 showUserWindow();
