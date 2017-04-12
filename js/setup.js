@@ -71,7 +71,6 @@ var wizardRecolor = function () {
   var wizardFireball = setupPlayer.querySelector('.setup-fireball-wrap');
 
 // Функция смены цвета по клику
-<<<<<<< HEAD
   // Проверяем, есть ли событие
   var isClicked = function (keyEvt) {
     return keyEvt && keyEvt.keyCode !== 'undefined';
@@ -101,25 +100,6 @@ var wizardRecolor = function () {
   wizardFireball.addEventListener('click', getFireRandomColor);
 };
 
-=======
-  var getRandomColor = function (evt) {
-    if (evt.srcElement.className.baseVal === 'wizard-coat') {
-      evt.srcElement.style.fill = coatColors[getRandomInt(coatColors)];
-    }
-    if (evt.srcElement.className.baseVal === 'wizard-eyes') {
-      evt.srcElement.style.fill = eyesColors[getRandomInt(eyesColors)];
-    }
-    if (evt.target.parentNode.className === 'setup-fireball-wrap') {
-      evt.target.parentNode.style.background = fireColors[getRandomInt(fireColors)];
-    }
-  };
-
-  wizardCoat.addEventListener('click', getRandomColor);
-  wizardEyes.addEventListener('click', getRandomColor);
-  wizardFireball.addEventListener('click', getRandomColor);
-};
-
->>>>>>> 0f361cdc2d03337930f701a001b9f32d80ccde53
 // Взаимодействие с окном пользователя
 var showUserWindow = function () {
   var setup = document.querySelector('.setup');
@@ -184,17 +164,12 @@ var showUserWindow = function () {
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
-<<<<<<< HEAD
   var stopOpening = function (evt) {
     closePopup();
   };
 
   var closebyButton = function () {
-    setupSubmit.addEventListener('submit', stopOpening);
-=======
-  var closebyButton = function () {
-    closePopup();
->>>>>>> 0f361cdc2d03337930f701a001b9f32d80ccde53
+    setupSubmit.addEventListener('submi', stopOpening);
   };
 
   setupOpen.addEventListener('click', openPopup);
