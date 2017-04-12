@@ -7,6 +7,8 @@ var coatColors = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)
 var eyesColors = ['black', 'red', 'blue', 'yellow', 'green'];
 var fireColors = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var numberOfWizards = 4;
+var ESCAPE_KEY_CODE = 27;
+var ENTER_KEY_CODE = 13;
 
 // Получение случайного индекса для массива (массив)
 var getRandomInt = function (array) {
@@ -68,19 +70,35 @@ var wizardRecolor = function () {
   var wizardEyes = setupPlayer.querySelector('.wizard-eyes');
   var wizardFireball = setupPlayer.querySelector('.setup-fireball-wrap');
 
-  wizardCoat.addEventListener('click', function () {
-    wizardCoat.style.fill = coatColors[getRandomInt(coatColors)];
-  });
+// Функция смены цвета по клику
+  // Проверяем, есть ли событие
+  var isClicked = function (keyEvt) {
+    return keyEvt && keyEvt.keyCode !== 'undefined';
+  };
 
-  wizardEyes.addEventListener('click', function () {
-    wizardEyes.style.fill = eyesColors[getRandomInt(eyesColors)];
-  });
+// Обработчики для смены цвета мантии/глаз/файербола
+  var getCoatRandomColor = function (evt) {
+    if (isClicked(evt)) {
+      wizardCoat.style.fill = coatColors[getRandomInt(coatColors)];
+    }
+  };
 
-  wizardFireball.addEventListener('click', function () {
-    wizardFireball.style.background = fireColors[getRandomInt(fireColors)];
-  });
+  var getEyesRandomColor = function (evt) {
+    if (isClicked(evt)) {
+      wizardEyes.style.fill = eyesColors[getRandomInt(eyesColors)];
+    }
+  };
+
+  var getFireRandomColor = function (evt) {
+    if (isClicked(evt)) {
+      wizardFireball.style.background = fireColors[getRandomInt(fireColors)];
+    }
+  };
+
+  wizardCoat.addEventListener('click', getCoatRandomColor);
+  wizardEyes.addEventListener('click', getEyesRandomColor);
+  wizardFireball.addEventListener('click', getFireRandomColor);
 };
-
 
 // Взаимодействие с окном пользователя
 var showUserWindow = function () {
@@ -93,20 +111,30 @@ var showUserWindow = function () {
   setupUserName.setAttribute('required', 'required');
   setupUserName.setAttribute('maxlength', 50);
 
+  var isEscapePressed = function (keyEvt) {
+    return keyEvt && keyEvt.keyCode === ESCAPE_KEY_CODE;
+  };
+
+  var isEnterPressed = function (keyEvt) {
+    return keyEvt && keyEvt.keyCode === ENTER_KEY_CODE;
+  };
+
   // Открытие окна по esc
   var onPopupEscPress = function (evt) {
-    if (evt.keyCode === 27) {
+    if (isEscapePressed(evt.keyCode)) {
       closePopup();
     }
   };
 
   var onPopupEntrerPress = function (evt) {
-    if (evt.keyCode === 13) {
-      if (evt.target.className === 'setup-open-icon') {
-        openPopup();
-      }
-      if (evt.target.className === 'setup-close') {
-        closePopup();
+    if (isEnterPressed(evt)) {
+      switch (evt.target.className) {
+        case 'setup-open-icon':
+          openPopup();
+          break;
+        case 'setup-close':
+          closePopup();
+          break;
       }
     }
   };
@@ -136,18 +164,19 @@ var showUserWindow = function () {
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
+  var stopOpening = function (evt) {
+    closePopup();
+  };
+
+  var closebyButton = function () {
+    setupSubmit.addEventListener('submit', stopOpening);
+  };
+
   setupOpen.addEventListener('click', openPopup);
   setupOpen.addEventListener('keydown', onPopupEntrerPress);
-  setupSubmit.addEventListener('click', closePopup);
+  setupSubmit.addEventListener('click', closebyButton);
   setupClose.addEventListener('keydown', onPopupEntrerPress);
   setupClose.addEventListener('click', closePopup);
 };
 
-// Привентивное добавление tabindex к кнопке открытия формы
-var addTabIndex = function () {
-  var setupIcon = document.querySelector('.setup-open-icon');
-  setupIcon.setAttribute('tabindex', 0);
-};
-
-addTabIndex();
 showUserWindow();
