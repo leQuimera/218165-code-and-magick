@@ -70,29 +70,18 @@ var wizardRecolor = function () {
   var wizardEyes = setupPlayer.querySelector('.wizard-eyes');
   var wizardFireball = setupPlayer.querySelector('.setup-fireball-wrap');
 
-// Функция смены цвета по клику
-  // Проверяем, есть ли событие
-  var isClicked = function (keyEvt) {
-    return keyEvt && keyEvt.keyCode !== 'undefined';
-  };
-
-// Обработчики для смены цвета мантии/глаз/файербола
+  // Функция смены цвета по клику
+  // Обработчики для смены цвета мантии/глаз/файербола
   var getCoatRandomColor = function (evt) {
-    if (isClicked(evt)) {
-      wizardCoat.style.fill = coatColors[getRandomInt(coatColors)];
-    }
+    wizardCoat.style.fill = coatColors[getRandomInt(coatColors)];
   };
 
   var getEyesRandomColor = function (evt) {
-    if (isClicked(evt)) {
-      wizardEyes.style.fill = eyesColors[getRandomInt(eyesColors)];
-    }
+    wizardEyes.style.fill = eyesColors[getRandomInt(eyesColors)];
   };
 
   var getFireRandomColor = function (evt) {
-    if (isClicked(evt)) {
-      wizardFireball.style.background = fireColors[getRandomInt(fireColors)];
-    }
+    wizardFireball.style.background = fireColors[getRandomInt(fireColors)];
   };
 
   wizardCoat.addEventListener('click', getCoatRandomColor);
@@ -111,21 +100,23 @@ var showUserWindow = function () {
   setupUserName.setAttribute('required', 'required');
   setupUserName.setAttribute('maxlength', 50);
 
+  // Событие есть и нажат esc
   var isEscapePressed = function (keyEvt) {
     return keyEvt && keyEvt.keyCode === ESCAPE_KEY_CODE;
   };
-
+  // Событие есть и нажат enter
   var isEnterPressed = function (keyEvt) {
     return keyEvt && keyEvt.keyCode === ENTER_KEY_CODE;
   };
 
-  // Открытие окна по esc
+  // Открытие окна по esc если событие валидно, и если поле ввода имени не в фокусе
   var onPopupEscPress = function (evt) {
-    if (isEscapePressed(evt.keyCode)) {
+    if (isEscapePressed(evt) && setupUserName !== document.activeElement) {
       closePopup();
     }
   };
 
+  // Открытие-закрытие окна по enter
   var onPopupEntrerPress = function (evt) {
     if (isEnterPressed(evt)) {
       switch (evt.target.className) {
@@ -158,23 +149,33 @@ var showUserWindow = function () {
     wizardRecolor();
   };
 
+ // Проверяем, есть ли событие (событие есть && произошло по клику)
+  var isClicked = function (keyEvt) {
+    return keyEvt && keyEvt.type === 'click';
+  };
+
   // Закрытие окна
   var closePopup = function () {
     setup.classList.add('hidden');
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
-  var stopOpening = function (evt) {
-    closePopup();
-  };
-
-  var closebyButton = function () {
-    setupSubmit.addEventListener('submi', stopOpening);
+  // Закрытие окна по клику на кнопке формы
+  //  если событие имеет место
+  //  Если поле имени мага пусто - форма не закрывается
+  var closeSetupByButton = function (evt) {
+    if (isClicked(evt)) {
+      if (setupUserName.value === '') {
+        evt.preventDefault();
+      } else {
+        closePopup();
+      }
+    }
   };
 
   setupOpen.addEventListener('click', openPopup);
   setupOpen.addEventListener('keydown', onPopupEntrerPress);
-  setupSubmit.addEventListener('click', closebyButton);
+  setupSubmit.addEventListener('click', closeSetupByButton);
   setupClose.addEventListener('keydown', onPopupEntrerPress);
   setupClose.addEventListener('click', closePopup);
 };
