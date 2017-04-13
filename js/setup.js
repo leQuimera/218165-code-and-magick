@@ -100,6 +100,16 @@ var showUserWindow = function () {
   setupUserName.setAttribute('required', 'required');
   setupUserName.setAttribute('maxlength', 50);
 
+  // Проверка существования магов в блоке "Похожие" и очистка списка магов, если он уже был создан
+  var validateWizards = function () {
+    var similarListElement = document.querySelector('.setup-similar-list');
+    if (similarListElement.children.length) {
+      while (similarListElement.firstChild) {
+        similarListElement.removeChild(similarListElement.firstChild);
+      }
+    }
+  };
+
   // Событие есть и нажат esc
   var isEscapePressed = function (keyEvt) {
     return keyEvt && keyEvt.keyCode === ESCAPE_KEY_CODE;
@@ -130,16 +140,6 @@ var showUserWindow = function () {
     }
   };
 
-  // Проверка существования магов в блоке "Похожие" и очистка списка магов, если он уже был создан
-  var validateWizards = function () {
-    var similarListElement = document.querySelector('.setup-similar-list');
-    if (similarListElement.children.length) {
-      while (similarListElement.firstChild) {
-        similarListElement.removeChild(similarListElement.firstChild);
-      }
-    }
-  };
-
   // Открытие окна
   var openPopup = function () {
     setup.classList.remove('hidden');
@@ -149,11 +149,6 @@ var showUserWindow = function () {
     wizardRecolor();
   };
 
- // Проверяем, есть ли событие (событие есть && произошло по клику)
-  var isClicked = function (keyEvt) {
-    return keyEvt && keyEvt.type === 'click';
-  };
-
   // Закрытие окна
   var closePopup = function () {
     setup.classList.add('hidden');
@@ -161,21 +156,35 @@ var showUserWindow = function () {
   };
 
   // Закрытие окна по клику на кнопке формы
-  //  если событие имеет место
-  //  Если поле имени мага пусто - форма не закрывается
-  var closeSetupByButton = function (evt) {
-    if (isClicked(evt)) {
-      if (setupUserName.value === '') {
-        evt.preventDefault();
-      } else {
+  //  блокируем отправку формы
+  //  проверям, валидна ли форма
+  // если все так, закрываем окно
+  var closeSetupByButtonClick = function (evt) {
+    evt.preventDefault();
+    if (setupUserName.validity.valid) {
+      closePopup();
+    }
+  };
+
+  // Закрытие окна по клику на кнопке формы
+  //  блокируем отправку формы
+  // проверяем, нажатие это по энтер
+  //  проверям, валидна ли форма
+  // если все так, закрываем окно
+  var closeSetupByButtonEnter = function (evt) {
+    evt.preventDefault();
+    if (isEnterPressed(evt)) {
+      if (setupUserName.validity.valid) {
         closePopup();
       }
     }
   };
 
+
   setupOpen.addEventListener('click', openPopup);
   setupOpen.addEventListener('keydown', onPopupEntrerPress);
-  setupSubmit.addEventListener('click', closeSetupByButton);
+  setupSubmit.addEventListener('click', closeSetupByButtonClick);
+  setupSubmit.addEventListener('keydown', closeSetupByButtonEnter);
   setupClose.addEventListener('keydown', onPopupEntrerPress);
   setupClose.addEventListener('click', closePopup);
 };
